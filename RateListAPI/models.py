@@ -19,3 +19,4 @@ class Prices(models.Model):
         dest_code = models.ForeignKey(Ports , on_delete=models.CASCADE, related_name='destination_prices')
         day = models.DateField()
         price = models.IntegerField()
+
