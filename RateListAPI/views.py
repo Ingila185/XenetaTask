@@ -4,7 +4,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.views  import APIView
 import datetime
-
+from django.db import connection
+from .serializers  import AveragePriceSerializer
 # Create your views here.
 
 class RateList(APIView):
@@ -23,5 +24,9 @@ class RateList(APIView):
         except ValueError:
             return Response({'error': 'Invalid date format. Use YYYY-MM-DD'}, status=status.HTTP_400_BAD_REQUEST)
 
+        with connection.cursor() as cursor:
+            cursor.callproc('get_average_prices')
+            results = cursor.fetchall()
 
-        return Response ({"message:": "Average port rates from origin to destination - Class"}, status=status.HTTP_200_OK)
+        average_prices = [{"day": row[1], "average_price": row[0]}  for row in results ]
+        return Response (average_prices , status=status.HTTP_200_OK)

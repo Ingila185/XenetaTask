@@ -20,3 +20,9 @@ class Prices(models.Model):
         day = models.DateField()
         price = models.IntegerField()
 
+
+
+class AveragePrice:
+        price = models.IntegerField()
+        day = models.DateField()
+       

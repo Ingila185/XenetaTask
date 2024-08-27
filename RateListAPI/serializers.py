@@ -1,7 +1,9 @@
 from rest_framework import serializers
-from .models import Regions
+from .models import AveragePrice
 
-class RegionSerializer(serializers.ModelSerializer):
-        class Meta:
-            model: Regions
-            fields: ['slug','name','parent_slug']
+
+class AveragePriceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AveragePrice
+        price = serializers.IntegerField()
+        day = serializers.DateField()
