@@ -12,6 +12,10 @@
 
     ```py -m venv venv```
 
+- Activate the virtual environment using
+
+    ```venv\Scripts\Activate```
+
 
 - Install all requirements 
 
