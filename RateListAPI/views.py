@@ -24,7 +24,7 @@ class RateList(APIView):
             return Response({'error': 'Invalid date format. Use YYYY-MM-DD'}, status=status.HTTP_400_BAD_REQUEST)
 
         with connection.cursor() as cursor:
-            cursor.callproc('get_average_prices', (origin, destination, date_from, date_to))
+            cursor.callproc('public.get_average_prices', (origin, destination, date_from, date_to))
             results = cursor.fetchall()
 
         average_prices = [{"day": row[1], "average_price": row[0]}  for row in results ]
