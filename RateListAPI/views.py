@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.views  import APIView
 import datetime
 from django.db import connection
+
 # Create your views here.
 
 class RateList(APIView):
@@ -23,9 +24,29 @@ class RateList(APIView):
         except ValueError:
             return Response({'error': 'Invalid date format. Use YYYY-MM-DD'}, status=status.HTTP_400_BAD_REQUEST)
 
-        with connection.cursor() as cursor:
-            cursor.callproc('public.get_average_prices', (origin, destination, date_from, date_to))
-            results = cursor.fetchall()
+        
+
+        if(len(origin) == 5 and len(destination)==5):
+            with connection.cursor() as cursor:
+                cursor.callproc('public.get_average_prices_port_to_port', (origin, destination, date_from, date_to))
+                results = cursor.fetchall()
+
+
+        if(len(origin) == 5 and len(destination)> 5): #origin is port code, destination is region slug
+            with connection.cursor() as cursor:
+                cursor.callproc('public.get_average_prices_port_to_region', (origin, destination, date_from, date_to))
+                results = cursor.fetchall()
+
+        if(len(origin) > 5 and len(destination) == 5): #origin is region slug, destination is port code
+            with connection.cursor() as cursor:
+                cursor.callproc('public.get_average_prices_region_to_port', (origin, destination, date_from, date_to))
+                results = cursor.fetchall()
+        
+        if(len(origin) > 5 and len(destination) > 5):
+            with connection.cursor() as cursor:
+                cursor.callproc('public.get_average_prices_region_to_region', (origin, destination, date_from, date_to))
+                results = cursor.fetchall()
+        
 
         average_prices = [{"day": row[1], "average_price": row[0]}  for row in results ]
         return Response (average_prices , status=status.HTTP_200_OK)
