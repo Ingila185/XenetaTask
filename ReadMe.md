@@ -1,6 +1,6 @@
 **Database Setup**
 
-- Setup the database from the docker image in the repository https://github.com/Ingila185/XenetaTaskDbSetup. Follow instructions in Readme.md.
+- Setup the database from the docker image in the repository https://github.com/Ingila185/XenetaTaskDbSetup. Follow instructions in [Readme.md.](https://github.com/Ingila185/XenetaTaskDbSetup/blob/main/ratestask/README.md)
 
 
 **Backend API Setup**
